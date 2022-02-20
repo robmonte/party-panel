@@ -141,7 +141,7 @@ public class PlayerPanel extends JPanel
 			}
 
 			final EquipmentPanelSlot slot = this.equipmentPanel.getPanelMap().get(equipSlot);
-			if (item != null)
+			if (item != null && slot != null)
 			{
 				final AsyncBufferedImage img = itemManager.getImage(item.getId(), item.getQty(), item.isStackable());
 				slot.setGameItem(item, img);
@@ -150,7 +150,7 @@ public class PlayerPanel extends JPanel
 				final GameItem finalItem = item;
 				img.onLoaded(() -> slot.setGameItem(finalItem, img));
 			}
-			else
+			else if (slot != null)
 			{
 				slot.setGameItem(null, null);
 			}

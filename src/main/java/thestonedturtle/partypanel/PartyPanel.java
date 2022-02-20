@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.swing.JButton;
@@ -42,6 +41,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -55,10 +55,9 @@ class PartyPanel extends PluginPanel
 	private static final Color BACKGROUND_HOVER_COLOR = ColorScheme.DARK_GRAY_HOVER_COLOR;
 
 	private final PartyPanelPlugin plugin;
-	private final Map<UUID, PlayerBanner> bannerMap = new HashMap<>();
+	//private final Map<UUID, PlayerBanner> bannerMap = new HashMap<>();
+	private final Map<UUID, PlayerPanel> panelMap = new HashMap<>();
 	private final JPanel panel;
-	private PlayerPanel playerPanel = null;
-	private PartyPlayer selectedPlayer = null;
 
 	@Inject
 	PartyPanel(final PartyPanelPlugin plugin)
@@ -78,34 +77,41 @@ class PartyPanel extends PluginPanel
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(createLeaveButton(), BorderLayout.SOUTH);
+		//this.add(createLeaveButton(), BorderLayout.SOUTH);
 	}
 
 	void refreshUI()
 	{
-		panel.removeAll();
-		if (selectedPlayer == null)
-		{
-			showBannerView();
-		}
-		else if (plugin.getPartyMembers().containsKey(selectedPlayer.getMemberId()))
-		{
-			showPlayerView();
-		}
-		else
-		{
-			selectedPlayer = null;
-			showBannerView();
-		}
+		System.out.println("Inside refreshUI");
+		//panel.removeAll();
+//		if (selectedPlayer == null)
+//		{
+//			showBannerView();
+//		}
+//		else if (plugin.getPartyMembers().containsKey(selectedPlayer.getMemberId()))
+//		{
+//			showPlayerView();
+//		}
+//		else
+//		{
+//			selectedPlayer = null;
+//			showBannerView();
+//		}
+		renderSidebar();
 	}
 
 	/**
 	 * Shows all members of the party, excluding the local player, in banner view. See {@link PlayerBanner)
 	 */
-	void showBannerView()
+	void renderSidebar()
 	{
-		selectedPlayer = null;
-		panel.removeAll();
+		System.out.print("Inside renderSidebar, party members are: ");
+		plugin.getPartyMembers().forEach((k, v) -> {
+			System.out.printf("%s---'%s' ", v.getMemberId(), v.getUsername());
+		});
+		System.out.println();
+		//selectedPlayer = null;
+		//panel.removeAll();
 
 		final Collection<PartyPlayer> players = plugin.getPartyMembers().values()
 			.stream()
@@ -115,33 +121,46 @@ class PartyPanel extends PluginPanel
 
 		for (final PartyPlayer player : players)
 		{
-			final PlayerBanner banner = new PlayerBanner(player, plugin.spriteManager);
-			banner.addMouseListener(new MouseAdapter()
-			{
-				@Override
-				public void mousePressed(MouseEvent e)
-				{
-					if (e.getButton() == MouseEvent.BUTTON1)
-					{
-						selectedPlayer = player;
-						showPlayerView();
-					}
-				}
+//			banner.addMouseListener(new MouseAdapter()
+//			{
+//				@Override
+//				public void mousePressed(MouseEvent e)
+//				{
+//					if (e.getButton() == MouseEvent.BUTTON1)
+//					{
+//						//selectedPlayer = player;
+//						showPlayerView(player);
+//					}
+//				}
+//
+//				@Override
+//				public void mouseEntered(MouseEvent e)
+//				{
+//					banner.setBackground(BACKGROUND_HOVER_COLOR);
+//				}
+//
+//				@Override
+//				public void mouseExited(MouseEvent e)
+//				{
+//					banner.setBackground(BACKGROUND_COLOR);
+//				}
+//			});
 
-				@Override
-				public void mouseEntered(MouseEvent e)
-				{
-					banner.setBackground(BACKGROUND_HOVER_COLOR);
-				}
+			//System.out.print("Now bannerMap contains:");
+			//bannerMap.forEach((k, v) -> {
+			//	System.out.printf("%s---'%s' ", v.getPlayer().getMemberId(), v.getPlayer().getUsername());
+			//});
+			//System.out.println();
 
-				@Override
-				public void mouseExited(MouseEvent e)
-				{
-					banner.setBackground(BACKGROUND_COLOR);
-				}
+			System.out.println("Adding " + player.getUsername() + " panel");
+			drawPlayerPanel(player);
+
+			System.out.print("Now panelMap contains:");
+			panelMap.forEach((k, v) -> {
+				System.out.printf("%s---'%s' ", v.getPlayer().getMemberId(), v.getPlayer().getUsername());
 			});
-			panel.add(banner);
-			bannerMap.put(player.getMember().getMemberId(), banner);
+			System.out.println();
+
 		}
 
 		if (getComponentCount() == 0)
@@ -151,28 +170,31 @@ class PartyPanel extends PluginPanel
 
 		panel.revalidate();
 		panel.repaint();
+		System.out.println("End renderSidebar\n");
 	}
 
-	void showPlayerView()
+	void drawPlayerPanel(PartyPlayer player)
 	{
-		if (selectedPlayer == null)
-		{
-			showBannerView();
-		}
+//		if (selectedPlayer == null)
+//		{
+//			drawPanel();
+//		}
 
-		panel.removeAll();
-		panel.add(createReturnButton());
+		//panel.removeAll();
+		//panel.add(createReturnButton());
 
-		if (playerPanel != null)
+		if (panelMap.get(player.getMemberId()) != null)
 		{
-			playerPanel.changePlayer(selectedPlayer);
+			panelMap.get(player.getMemberId()).changePlayer(player);
+			//playerPanel.changePlayer(selectedPlayer);
 		}
 		else
 		{
-			playerPanel = new PlayerPanel(selectedPlayer, plugin.spriteManager, plugin.itemManager);
+			panelMap.put(player.getMemberId(), new PlayerPanel(player, plugin.spriteManager, plugin.itemManager));
+			//playerPanel = new PlayerPanel(selectedPlayer, plugin.spriteManager, plugin.itemManager);
 		}
-		panel.add(playerPanel);
 
+		panel.add(panelMap.get(player.getMemberId()));
 		panel.revalidate();
 		panel.repaint();
 	}
@@ -200,7 +222,7 @@ class PartyPanel extends PluginPanel
 			{
 				if (e.getButton() == MouseEvent.BUTTON1)
 				{
-					showBannerView();
+					renderSidebar();
 				}
 			}
 		});
@@ -231,9 +253,10 @@ class PartyPanel extends PluginPanel
 			{
 				if (e.getButton() == MouseEvent.BUTTON1)
 				{
-					selectedPlayer = null;
-					bannerMap.clear();
-					playerPanel = null;
+					//selectedPlayer = null;
+					//bannerMap.clear();
+					//playerPanel = null;
+					panelMap.clear();
 					plugin.leaveParty();
 				}
 			}
@@ -244,47 +267,65 @@ class PartyPanel extends PluginPanel
 
 	void updatePartyPlayer(final PartyPlayer player)
 	{
-		if (selectedPlayer == null)
-		{
-			final PlayerBanner panel = bannerMap.get(player.getMemberId());
-			if (panel == null)
-			{
+		System.out.println("Inside updatePartyPlayer");
+		//if (selectedPlayer == null)
+		//if (player == null)
+		//{
+			//System.out.println("++++++++++   PLAYER WAS NULL   ++++++++++");
+			//PlayerBanner banner = bannerMap.get(player.getMemberId());
+			//if (banner == null)
+			//{
+			//	System.out.println("banner was null");
 				// New member, recreate entire view
-				showBannerView();
-				return;
-			}
+			//	renderSidebar();
+			//	return;
+			//}
 
-			final String oldPlayerName = panel.getPlayer().getUsername();
-			panel.setPlayer(player);
-			if (!Objects.equals(player.getUsername(), oldPlayerName))
-			{
-				panel.recreatePanel();
-			}
-			else
-			{
-				panel.refreshStats();
-			}
-		}
-		else
+			//final String oldPlayerName = banner.getPlayer().getUsername();
+			//banner.setPlayer(player);
+			//if (!Objects.equals(player.getUsername(), oldPlayerName))
+			//{
+			//	banner.recreatePanel();
+			//}
+			//else
+			//{
+			//	banner.refreshStats();
+			//}
+		//}
+		//else
+		if (player != null)
 		{
-			if (player.getMemberId().equals(selectedPlayer.getMemberId()))
-			{
-				this.selectedPlayer = player;
-				showPlayerView();
-			}
+			System.out.println("player was not null");
+			//if (player.getMemberId().equals(selectedPlayer.getMemberId()))
+			//{
+				//this.selectedPlayer = player;
+				//showPlayerView(player);
+			renderSidebar();
+			//}
 		}
+
+		System.out.println("End updatePartyPlayer\n");
 	}
 
 	void removePartyPlayer(final PartyPlayer player)
 	{
-		bannerMap.remove(player.getMemberId());
 
-		if (selectedPlayer != null && !selectedPlayer.getMemberId().equals(player.getMemberId()))
+		System.out.print("Inside removePartyPlayer, player is ");
+		System.out.println(player==null?"null":"not null");
+		//if (selectedPlayer != null && !selectedPlayer.getMemberId().equals(player.getMemberId()))
+		if (player == null)
 		{
 			return;
 		}
 
-		selectedPlayer = null;
-		showBannerView();
+		//selectedPlayer = null;
+
+		System.out.printf("Removing player '%s'\n", player.getUsername());
+		//bannerMap.remove(player.getMemberId());
+		panelMap.remove(player.getMemberId());
+
+		panel.removeAll();
+		renderSidebar();
+		System.out.println("End removePartyPlayer\n");
 	}
 }

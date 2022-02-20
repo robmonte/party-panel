@@ -100,7 +100,7 @@ public class PartyPanelPlugin extends Plugin
 	{
 		panel = new PartyPanel(this);
 		navButton = NavigationButton.builder()
-			.tooltip("Party Panel")
+			.tooltip("Discord Party Panel")
 			.icon(ICON)
 			.priority(7)
 			.panel(panel)

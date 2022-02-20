@@ -92,7 +92,7 @@ public class PlayerBanner extends JPanel
 
 	public void recreatePanel()
 	{
-		removeAll();
+		//removeAll();
 
 		final GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.NORTHWEST;
