@@ -25,11 +25,10 @@
 package thestonedturtle.partypanel.ui;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -44,7 +43,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
-import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
@@ -63,6 +61,8 @@ import thestonedturtle.partypanel.ui.skills.SkillPanelSlot;
 public class PlayerPanel extends JPanel
 {
 	private static final Dimension IMAGE_SIZE = new Dimension(24, 24);
+	private static final Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
+	private static final Color BACKGROUND_HOVER_COLOR = ColorScheme.DARK_GRAY_HOVER_COLOR;
 
 	private PartyPlayer player;
 	private final SpriteManager spriteManager;
@@ -73,6 +73,8 @@ public class PlayerPanel extends JPanel
 	private final PlayerEquipmentPanel equipmentPanel;
 	private final PlayerSkillsPanel skillsPanel;
 	private final PlayerPrayerPanel prayersPanel;
+
+	private boolean showInfo = true;
 
 	public PlayerPanel(final PartyPlayer selectedPlayer, final SpriteManager spriteManager, final ItemManager itemManager)
 	{
@@ -86,29 +88,35 @@ public class PlayerPanel extends JPanel
 		this.skillsPanel = new PlayerSkillsPanel(selectedPlayer, spriteManager);
 		this.prayersPanel = new PlayerPrayerPanel(selectedPlayer, spriteManager);
 
-		this.setBorder(new CompoundBorder(
-			new MatteBorder(2, 2, 2, 2, new Color(87, 80, 64)),
-			new EmptyBorder(0, 0, 5,  0)
-		));
 
-		final JPanel separator = new JPanel();
-		separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
+		banner.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					showInfo = !showInfo;
+					updatePanel();
+				}
+			}
 
-		final JPanel view = new JPanel();
-		view.setBorder(new EmptyBorder(5, 5, 0,  5));
-		final MaterialTabGroup tabGroup = new MaterialTabGroup(view);
-		tabGroup.setBorder(new EmptyBorder(10, 0, 4, 0));
+			@Override
+			public void mouseEntered(MouseEvent e)
+			{
+				banner.setBackground(BACKGROUND_HOVER_COLOR);
+				System.out.println("Hovering over set hovering color");
+			}
 
-		addTab(tabGroup, SpriteID.TAB_INVENTORY, inventoryPanel, "Inventory");
-		addTab(tabGroup, SpriteID.TAB_EQUIPMENT, equipmentPanel, "Equipment");
-		addTab(tabGroup, SpriteID.TAB_PRAYER, prayersPanel, "Prayers");
-		addTab(tabGroup, SpriteID.TAB_STATS, skillsPanel, "Skills");
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				banner.setBackground(BACKGROUND_COLOR);
+				System.out.println("Moving away set original color");
+			}
+		});
 
-		setLayout(new DynamicGridLayout(0, 1));
-		add(banner);
-		add(separator);
-		add(tabGroup);
-		add(view);
+		updatePanel();
 
 		revalidate();
 		repaint();
@@ -207,5 +215,49 @@ public class PlayerPanel extends JPanel
 
 			prayersPanel.updatePrayerRemaining(player.getSkillBoostedLevel(Skill.PRAYER), player.getSkillRealLevel(Skill.PRAYER));
 		}
+	}
+
+	private void updatePanel()
+	{
+		this.removeAll();
+
+		this.setBorder(new CompoundBorder(
+				new MatteBorder(2, 2, 2, 2, new Color(87, 80, 64)),
+				new EmptyBorder(0, 0, 5,  0)
+		));
+
+
+		//separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
+
+		final JPanel view = new JPanel();
+		view.setBorder(new EmptyBorder(5, 5, 0,  5));
+		final MaterialTabGroup tabGroup = new MaterialTabGroup(view);
+		tabGroup.setBorder(new EmptyBorder(10, 0, 4, 0));
+		final JPanel separator = new JPanel();
+
+		addTab(tabGroup, SpriteID.TAB_INVENTORY, inventoryPanel, "Inventory");
+		addTab(tabGroup, SpriteID.TAB_EQUIPMENT, equipmentPanel, "Equipment");
+		addTab(tabGroup, SpriteID.TAB_PRAYER, prayersPanel, "Prayers");
+		addTab(tabGroup, SpriteID.TAB_STATS, skillsPanel, "Skills");
+
+		setLayout(new DynamicGridLayout(0, 1));
+
+		if (this.showInfo)
+		{
+			separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
+			add(banner);
+			add(separator);
+			add(tabGroup);
+			add(view);
+		}
+		else
+		{
+			separator.setPreferredSize(new Dimension(1, 5));
+			add(banner);
+			add(separator);
+		}
+
+		revalidate();
+		repaint();
 	}
 }

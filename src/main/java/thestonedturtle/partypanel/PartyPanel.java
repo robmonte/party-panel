@@ -49,7 +49,6 @@ class PartyPanel extends PluginPanel
 	private final PartyPanelPlugin plugin;
 	private final HashMap<UUID, PlayerPanel> playerPanelMap = new HashMap<>();
 	private final JPanel basePanel;
-	private static int spacerCount = 0;
 
 	@Inject
 	PartyPanel(final PartyPanelPlugin plugin)
@@ -77,11 +76,11 @@ class PartyPanel extends PluginPanel
 	void renderSidebar()
 	{
 		basePanel.removeAll();
-		System.out.print("Inside renderSidebar, party members are: ");
-		plugin.getPartyMembers().forEach((k, v) -> {
-			System.out.printf("%s---'%s' ", v.getMemberId(), v.getUsername());
-		});
-		System.out.println();
+//		System.out.print("Inside renderSidebar, party members are: ");
+//		plugin.getPartyMembers().forEach((k, v) -> {
+//			System.out.printf("%s---'%s' ", v.getMemberId(), v.getUsername());
+//		});
+//		System.out.println();
 
 		// Sort by their RSN first; If it doesn't exist sort by their Discord name instead
 		final List<PartyPlayer> players = plugin.getPartyMembers().values()
@@ -91,58 +90,24 @@ class PartyPanel extends PluginPanel
 
 		for (final PartyPlayer player : players)
 		{
-			final PlayerPanel playerPanel = playerPanelMap.get(player.getMemberId());
-			if (playerPanel != null)
-			{
-				playerPanel.getBanner().addMouseListener(new MouseAdapter()
-				{
-					@Override
-					public void mousePressed(MouseEvent e)
-					{
-						if (e.getButton() == MouseEvent.BUTTON1)
-						{
-							//collapse inventory stuff
-							plugin.getHideMap().put(player.getMemberId(), !plugin.getHideMap().get(player.getMemberId()));
-							System.out.println("Set hideMap for " + player.getUsername() + " to " + plugin.getHideMap().get(player.getMemberId()));
-						}
-					}
 
-					@Override
-					public void mouseEntered(MouseEvent e)
-					{
-						playerPanelMap.get(player.getMemberId()).getBanner().setBackground(BACKGROUND_HOVER_COLOR);
-						System.out.println("Hovering over set hovering color");
-					}
-
-					@Override
-					public void mouseExited(MouseEvent e)
-					{
-						playerPanelMap.get(player.getMemberId()).getBanner().setBackground(BACKGROUND_COLOR);
-						System.out.println("Moving away set original color");
-					}
-				});
-			}
-
-
-
-			System.out.println("Adding " + player.getUsername() + " panel");
+//			System.out.println("Adding " + player.getUsername() + " panel");
 			drawPlayerPanel(player);
 
-			System.out.print("Now panelMap contains:");
-			playerPanelMap.forEach((k, v) -> {
-				System.out.printf("%s---'%s' ", v.getPlayer().getMemberId(), v.getPlayer().getUsername());
-			});
-			System.out.println();
+//			System.out.print("Now panelMap contains:");
+//			playerPanelMap.forEach((k, v) -> {
+//				System.out.printf("%s---'%s' ", v.getPlayer().getMemberId(), v.getPlayer().getUsername());
+//			});
+//			System.out.println();
 
-			if (player != players.get(players.size()-1) /*&& spacerCount < players.size()*/)
+			if (player != players.get(players.size()-1))
 			{
 				System.out.printf("player '%s' != '%s'\n", player.getUsername(), players.get(players.size()-1).getUsername());
+				System.out.printf("player '%s' != '%s'\n", player.getMember().getName(), players.get(players.size()-1).getMember().getName());
 
 				final JPanel spacer = new JPanel();
 				spacer.setBorder(new EmptyBorder(0, 0, 4, 0));
-				System.out.println("adding spacer");
 				basePanel.add(spacer);
-				//spacerCount++;
 			}
 		}
 
@@ -158,14 +123,16 @@ class PartyPanel extends PluginPanel
 
 	void drawPlayerPanel(PartyPlayer player)
 	{
-		if (playerPanelMap.get(player.getMemberId()) != null)
+		System.out.println("Drawing " + player.getUsername() + " player panel");
+		PlayerPanel playerPanel = playerPanelMap.get(player.getMemberId());
+
+		if (playerPanel != null)
 		{
-			playerPanelMap.get(player.getMemberId()).changePlayer(player);
+			playerPanel.changePlayer(player);
 		}
 		else
 		{
 			playerPanelMap.put(player.getMemberId(), new PlayerPanel(player, plugin.spriteManager, plugin.itemManager));
-			plugin.getHideMap().put(player.getMemberId(), false);
 		}
 
 		basePanel.add(playerPanelMap.get(player.getMemberId()));
