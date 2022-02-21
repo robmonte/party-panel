@@ -89,6 +89,9 @@ public class PartyPanelPlugin extends Plugin
 	@Getter
 	private final Map<UUID, PartyPlayer> partyMembers = new HashMap<>();
 
+	@Getter
+	private final HashMap<UUID, Boolean> hideMap = new HashMap<>();
+
 	private NavigationButton navButton;
 	private boolean addedButton = false;
 	private PartyPanel panel;
@@ -192,7 +195,7 @@ public class PartyPanelPlugin extends Plugin
 		}
 
 		partyMembers.put(player.getMemberId(), player);
-		SwingUtilities.invokeLater(() -> panel.updatePartyPlayer(player));
+		SwingUtilities.invokeLater(() -> panel.renderSidebar());
 	}
 
 	@Subscribe
@@ -255,7 +258,7 @@ public class PartyPanelPlugin extends Plugin
 	public void onPartyChanged(final PartyChanged event)
 	{
 		partyMembers.clear();
-		SwingUtilities.invokeLater(panel::refreshUI);
+		SwingUtilities.invokeLater(panel::renderSidebar);
 		myPlayer = null;
 
 		if (!isInParty() && !config.alwaysShowIcon())

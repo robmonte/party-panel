@@ -112,12 +112,12 @@ public class PlayerSkillsPanel extends JPanel
 		SPRITE_MAP = map.build();
 	}
 
-	private static final Dimension PANEL_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 10, 300);
+	private static final Dimension PANEL_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 14, 296);
 	private static final Color PANEL_BORDER_COLOR = new Color(87, 80, 64);
-	private static final Border PANEL_BORDER = BorderFactory.createCompoundBorder(
-		BorderFactory.createMatteBorder(3, 3, 3, 3, PANEL_BORDER_COLOR),
-		BorderFactory.createEmptyBorder(2, 2, 2, 2)
-	);
+//	private static final Border PANEL_BORDER = BorderFactory.createCompoundBorder(
+//		BorderFactory.createMatteBorder(3, 3, 3, 3, PANEL_BORDER_COLOR),
+//		BorderFactory.createEmptyBorder(2, 2, 2, 2)
+//	);
 
 	@Getter
 	private final Map<Skill, SkillPanelSlot> panelMap = new HashMap<>();
@@ -130,7 +130,7 @@ public class PlayerSkillsPanel extends JPanel
 
 		this.setMinimumSize(PANEL_SIZE);
 		this.setPreferredSize(PANEL_SIZE);
-		this.setBorder(PANEL_BORDER);
+//		this.setBorder(PANEL_BORDER);
 		this.setBackground(new Color(62, 53, 41));
 		this.setLayout(new DynamicGridLayout(8, 3, 0, 0));
 

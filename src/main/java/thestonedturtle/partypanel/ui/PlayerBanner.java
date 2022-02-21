@@ -24,11 +24,7 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,28 +68,24 @@ public class PlayerBanner extends JPanel
 		this.player = player;
 
 		this.setLayout(new GridBagLayout());
-		this.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 75));
-		this.setBorder(new CompoundBorder(
-			new MatteBorder(2, 2, 2, 2, ColorScheme.DARK_GRAY_HOVER_COLOR),
-			new EmptyBorder(5, 5, 5,  5)
-		));
+		this.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH - 14, 68));
+		this.setBorder(new EmptyBorder(5, 5, 0,  5));
 
-		statsPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 30));
+		statsPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 25));
 		statsPanel.setLayout(new GridLayout(0, 4));
+		statsPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
 		statsPanel.setOpaque(false);
 
 		statsPanel.add(createIconPanel(spriteManager, SpriteID.SKILL_HITPOINTS, Skill.HITPOINTS.getName(), String.valueOf(player.getSkillBoostedLevel(Skill.HITPOINTS))));
 		statsPanel.add(createIconPanel(spriteManager, SpriteID.SKILL_PRAYER, Skill.PRAYER.getName(), String.valueOf(player.getSkillBoostedLevel(Skill.PRAYER))));
-		statsPanel.add(createIconPanel(spriteManager, SpriteID.MULTI_COMBAT_ZONE_CROSSED_SWORDS, SPECIAL_ATTACK_NAME, player.getStats() == null ? "0%" : String.valueOf(player.getStats().getSpecialPercent()) + "%"));
-		statsPanel.add(createIconPanel(spriteManager, SpriteID.MINIMAP_ORB_RUN_ICON, RUN_ENERGY_NAME, player.getStats() == null ? "0%" : String.valueOf(player.getStats().getRunEnergy()) + "%"));
+		statsPanel.add(createIconPanel(spriteManager, SpriteID.MULTI_COMBAT_ZONE_CROSSED_SWORDS, SPECIAL_ATTACK_NAME, player.getStats() == null ? "0" : String.valueOf(player.getStats().getSpecialPercent())));
+		statsPanel.add(createIconPanel(spriteManager, SpriteID.MINIMAP_ORB_RUN_ICON, RUN_ENERGY_NAME, player.getStats() == null ? "0" : String.valueOf(player.getStats().getRunEnergy())));
 
 		recreatePanel();
 	}
 
 	public void recreatePanel()
 	{
-		//removeAll();
-
 		final GridBagConstraints c = new GridBagConstraints();
 		c.anchor = GridBagConstraints.NORTHWEST;
 		c.gridx = 0;
@@ -173,8 +165,8 @@ public class PlayerBanner extends JPanel
 
 		statLabels.getOrDefault(Skill.HITPOINTS.getName(), new JLabel()).setText(String.valueOf(player.getSkillBoostedLevel(Skill.HITPOINTS)));
 		statLabels.getOrDefault(Skill.PRAYER.getName(), new JLabel()).setText(String.valueOf(player.getSkillBoostedLevel(Skill.PRAYER)));
-		statLabels.getOrDefault(SPECIAL_ATTACK_NAME, new JLabel()).setText(player.getStats() == null ? "0%" : String.valueOf(player.getStats().getSpecialPercent()) + "%");
-		statLabels.getOrDefault(RUN_ENERGY_NAME, new JLabel()).setText(player.getStats() == null ? "0%" : String.valueOf(player.getStats().getRunEnergy()) + "%");
+		statLabels.getOrDefault(SPECIAL_ATTACK_NAME, new JLabel()).setText(player.getStats() == null ? "0" : String.valueOf(player.getStats().getSpecialPercent()));
+		statLabels.getOrDefault(RUN_ENERGY_NAME, new JLabel()).setText(player.getStats() == null ? "0" : String.valueOf(player.getStats().getRunEnergy()));
 
 		statsPanel.revalidate();
 		statsPanel.repaint();
@@ -189,7 +181,14 @@ public class PlayerBanner extends JPanel
 		{
 			SwingUtilities.invokeLater(() ->
 			{
-				iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width, STAT_ICON_SIZE.height)));
+				if (spriteID == SpriteID.SKILL_PRAYER)
+				{
+					iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width+2, STAT_ICON_SIZE.height+2)));
+				}
+				else
+				{
+					iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width, STAT_ICON_SIZE.height)));
+				}
 				iconLabel.revalidate();
 				iconLabel.repaint();
 			});

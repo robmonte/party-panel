@@ -24,13 +24,17 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import java.util.stream.Collectors;
+import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
+
 import lombok.Getter;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Prayer;
@@ -38,7 +42,9 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.AsyncBufferedImage;
@@ -80,9 +86,18 @@ public class PlayerPanel extends JPanel
 		this.skillsPanel = new PlayerSkillsPanel(selectedPlayer, spriteManager);
 		this.prayersPanel = new PlayerPrayerPanel(selectedPlayer, spriteManager);
 
+		this.setBorder(new CompoundBorder(
+			new MatteBorder(2, 2, 2, 2, new Color(87, 80, 64)),
+			new EmptyBorder(0, 0, 5,  0)
+		));
+
+		final JPanel separator = new JPanel();
+		separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
+
 		final JPanel view = new JPanel();
+		view.setBorder(new EmptyBorder(5, 5, 0,  5));
 		final MaterialTabGroup tabGroup = new MaterialTabGroup(view);
-		tabGroup.setBorder(new EmptyBorder(10, 0, 10, 0));
+		tabGroup.setBorder(new EmptyBorder(10, 0, 4, 0));
 
 		addTab(tabGroup, SpriteID.TAB_INVENTORY, inventoryPanel, "Inventory");
 		addTab(tabGroup, SpriteID.TAB_EQUIPMENT, equipmentPanel, "Equipment");
@@ -91,6 +106,7 @@ public class PlayerPanel extends JPanel
 
 		setLayout(new DynamicGridLayout(0, 1));
 		add(banner);
+		add(separator);
 		add(tabGroup);
 		add(view);
 
