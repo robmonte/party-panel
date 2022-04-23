@@ -24,8 +24,12 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
+import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.ImageIcon;
