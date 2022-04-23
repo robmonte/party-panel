@@ -57,8 +57,6 @@ import thestonedturtle.partypanel.ui.prayer.PrayerSlot;
 import thestonedturtle.partypanel.ui.skills.PlayerSkillsPanel;
 import thestonedturtle.partypanel.ui.skills.SkillPanelSlot;
 
-import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
-
 @Getter
 public class PlayerPanel extends JPanel
 {
@@ -107,14 +105,12 @@ public class PlayerPanel extends JPanel
 			public void mouseEntered(MouseEvent e)
 			{
 				banner.setBackground(BACKGROUND_HOVER_COLOR);
-				System.out.println("Hovering over set hovering color");
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
 				banner.setBackground(BACKGROUND_COLOR);
-				System.out.println("Moving away set original color");
 			}
 		});
 
@@ -227,9 +223,6 @@ public class PlayerPanel extends JPanel
 				new MatteBorder(2, 2, 2, 2, new Color(87, 80, 64)),
 				new EmptyBorder(0, 0, 5,  0)
 		));
-
-
-		//separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
 
 		final JPanel view = new JPanel();
 		view.setBorder(new EmptyBorder(5, 5, 0,  5));

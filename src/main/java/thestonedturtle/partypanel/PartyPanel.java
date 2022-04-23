@@ -43,9 +43,6 @@ import thestonedturtle.partypanel.ui.PlayerPanel;
 
 class PartyPanel extends PluginPanel
 {
-	private static final Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
-	private static final Color BACKGROUND_HOVER_COLOR = ColorScheme.DARK_GRAY_HOVER_COLOR;
-
 	private final PartyPanelPlugin plugin;
 	private final HashMap<UUID, PlayerPanel> playerPanelMap = new HashMap<>();
 	private final JPanel basePanel;
@@ -76,11 +73,6 @@ class PartyPanel extends PluginPanel
 	void renderSidebar()
 	{
 		basePanel.removeAll();
-//		System.out.print("Inside renderSidebar, party members are: ");
-//		plugin.getPartyMembers().forEach((k, v) -> {
-//			System.out.printf("%s---'%s' ", v.getMemberId(), v.getUsername());
-//		});
-//		System.out.println();
 
 		// Sort by their RSN first; If it doesn't exist sort by their Discord name instead
 		final List<PartyPlayer> players = plugin.getPartyMembers().values()
@@ -90,21 +82,10 @@ class PartyPanel extends PluginPanel
 
 		for (final PartyPlayer player : players)
 		{
-
-//			System.out.println("Adding " + player.getUsername() + " panel");
 			drawPlayerPanel(player);
-
-//			System.out.print("Now panelMap contains:");
-//			playerPanelMap.forEach((k, v) -> {
-//				System.out.printf("%s---'%s' ", v.getPlayer().getMemberId(), v.getPlayer().getUsername());
-//			});
-//			System.out.println();
 
 			if (player != players.get(players.size()-1))
 			{
-				System.out.printf("player '%s' != '%s'\n", player.getUsername(), players.get(players.size()-1).getUsername());
-				System.out.printf("player '%s' != '%s'\n", player.getMember().getName(), players.get(players.size()-1).getMember().getName());
-
 				final JPanel spacer = new JPanel();
 				spacer.setBorder(new EmptyBorder(0, 0, 4, 0));
 				basePanel.add(spacer);
@@ -118,12 +99,10 @@ class PartyPanel extends PluginPanel
 
 		basePanel.revalidate();
 		basePanel.repaint();
-		System.out.println("End renderSidebar\n");
 	}
 
 	void drawPlayerPanel(PartyPlayer player)
 	{
-		System.out.println("Drawing " + player.getUsername() + " player panel");
 		PlayerPanel playerPanel = playerPanelMap.get(player.getMemberId());
 
 		if (playerPanel != null)
@@ -142,17 +121,10 @@ class PartyPanel extends PluginPanel
 
 	void removePartyPlayer(final PartyPlayer player)
 	{
-
-		System.out.print("Inside removePartyPlayer, player is ");
-		System.out.println(player==null?"null":"not null");
 		if (player != null)
 		{
-			System.out.printf("Removing player '%s'\n", player.getUsername());
 			playerPanelMap.remove(player.getMemberId());
-
 			renderSidebar();
 		}
-
-		System.out.println("End removePartyPlayer\n");
 	}
 }
