@@ -120,7 +120,7 @@ public class SkillPanelSlot extends JPanel
 	{
 		spriteManager.getSpriteAsync(SpriteID.STATS_TILE_HALF_LEFT, 0, img ->
 		{
-			skillHalf = ImgUtil.overlapImages(skillIcon, SkillPanelSlot.resize(img));
+			skillHalf = ImgUtil.overlapImages(skillIcon, SkillPanelSlot.resize(img), false);
 			updateBackgroundImage();
 		});
 		spriteManager.getSpriteAsync(SpriteID.STATS_TILE_HALF_RIGHT_WITH_SLASH, 0, img ->

@@ -57,6 +57,8 @@ import thestonedturtle.partypanel.ui.prayer.PrayerSlot;
 import thestonedturtle.partypanel.ui.skills.PlayerSkillsPanel;
 import thestonedturtle.partypanel.ui.skills.SkillPanelSlot;
 
+import static net.runelite.client.ui.PluginPanel.PANEL_WIDTH;
+
 @Getter
 public class PlayerPanel extends JPanel
 {
@@ -233,7 +235,6 @@ public class PlayerPanel extends JPanel
 		view.setBorder(new EmptyBorder(5, 5, 0,  5));
 		final MaterialTabGroup tabGroup = new MaterialTabGroup(view);
 		tabGroup.setBorder(new EmptyBorder(10, 0, 4, 0));
-		final JPanel separator = new JPanel();
 
 		addTab(tabGroup, SpriteID.TAB_INVENTORY, inventoryPanel, "Inventory");
 		addTab(tabGroup, SpriteID.TAB_EQUIPMENT, equipmentPanel, "Equipment");
@@ -244,17 +245,13 @@ public class PlayerPanel extends JPanel
 
 		if (this.showInfo)
 		{
-			separator.setBorder(new MatteBorder(0, 0, 2, 0, new Color(87, 80, 64)));
 			add(banner);
-			add(separator);
 			add(tabGroup);
 			add(view);
 		}
 		else
 		{
-			separator.setPreferredSize(new Dimension(1, 5));
 			add(banner);
-			add(separator);
 		}
 
 		revalidate();

@@ -45,7 +45,7 @@ public class EquipmentPanelSlot extends JLabel
 		super();
 
 		this.background = background;
-		this.placeholder = ImageUtil.resizeImage(ImgUtil.overlapImages(placeholder, background), IMAGE_SIZE, IMAGE_SIZE);
+		this.placeholder = ImageUtil.resizeImage(ImgUtil.overlapImages(placeholder, background, true), IMAGE_SIZE, IMAGE_SIZE);
 
 		setVerticalAlignment(JLabel.CENTER);
 		setHorizontalAlignment(JLabel.CENTER);
@@ -63,7 +63,7 @@ public class EquipmentPanelSlot extends JLabel
 			return;
 		}
 
-		setIcon(new ImageIcon(ImageUtil.resizeImage(ImgUtil.overlapImages(image, background), IMAGE_SIZE, IMAGE_SIZE)));
+		setIcon(new ImageIcon(ImageUtil.resizeImage(ImgUtil.overlapImages(image, background, true), IMAGE_SIZE, IMAGE_SIZE)));
 		setToolTipText(item.getName());
 	}
 }
