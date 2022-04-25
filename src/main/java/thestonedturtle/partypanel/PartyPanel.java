@@ -26,10 +26,7 @@ package thestonedturtle.partypanel;
 
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -88,7 +85,7 @@ class PartyPanel extends PluginPanel
 			if (player != players.get(players.size()-1))
 			{
 				final JPanel spacer = new JPanel();
-				spacer.setBorder(new EmptyBorder(0, 0, 4, 0));
+				spacer.setBorder(new EmptyBorder(0, 0, 0, 0));
 				basePanel.add(spacer);
 			}
 		}

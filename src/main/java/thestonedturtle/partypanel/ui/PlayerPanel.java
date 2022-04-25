@@ -24,13 +24,14 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
+import java.nio.Buffer;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
@@ -65,7 +66,8 @@ public class PlayerPanel extends JPanel
 {
 	private static final Dimension IMAGE_SIZE = new Dimension(24, 24);
 	private static final Color BACKGROUND_COLOR = ColorScheme.DARK_GRAY_COLOR;
-	private static final Color BACKGROUND_HOVER_COLOR = ColorScheme.DARK_GRAY_HOVER_COLOR;
+	private static final Color BACKGROUND_HOVER_COLOR = ColorScheme.DARKER_GRAY_COLOR;
+	private static final BufferedImage EXPAND_ICON = ImageUtil.loadImageResource(PlayerPanel.class, "expand.png");
 
 	private PartyPlayer player;
 	private final SpriteManager spriteManager;
@@ -91,31 +93,50 @@ public class PlayerPanel extends JPanel
 		this.skillsPanel = new PlayerSkillsPanel(selectedPlayer, spriteManager);
 		this.prayersPanel = new PlayerPrayerPanel(selectedPlayer, spriteManager);
 
+		// Non-optimal way to attach a mouse listener to
+		// the entire panel, but easy to implement
+		JPanel statsPanel = this.banner.getStatsPanel();
+		JLabel expandIcon = this.banner.getExpandIcon();
+		Component[] list = new Component[statsPanel.getComponentCount()+1];
+		System.arraycopy(statsPanel.getComponents(), 0, list, 0, list.length-1);
+		list[list.length-1] = banner;
 
-		banner.addMouseListener(new MouseAdapter()
+		for (Component comp : list)
 		{
-			@Override
-			public void mousePressed(MouseEvent e)
+			if (comp instanceof JPanel)
 			{
-				if (e.getButton() == MouseEvent.BUTTON1)
+				comp.addMouseListener(new MouseAdapter()
 				{
-					showInfo = !showInfo;
-					updatePanel();
-				}
-			}
+					@Override
+					public void mousePressed(MouseEvent e)
+					{
+						if (e.getButton() == MouseEvent.BUTTON1)
+						{
+							ImageIcon retrieve = (ImageIcon)expandIcon.getIcon();
+							BufferedImage buffered = (BufferedImage)retrieve.getImage();
 
-			@Override
-			public void mouseEntered(MouseEvent e)
-			{
-				banner.setBackground(BACKGROUND_HOVER_COLOR);
-			}
+							showInfo = !showInfo;
+							expandIcon.setIcon(new ImageIcon(ImageUtil.rotateImage(buffered, Math.PI)));
+							updatePanel();
+						}
+					}
 
-			@Override
-			public void mouseExited(MouseEvent e)
-			{
-				banner.setBackground(BACKGROUND_COLOR);
+					@Override
+					public void mouseEntered(MouseEvent e)
+					{
+						banner.setBackground(BACKGROUND_HOVER_COLOR);
+						statsPanel.setBackground(BACKGROUND_HOVER_COLOR);
+					}
+
+					@Override
+					public void mouseExited(MouseEvent e)
+					{
+						banner.setBackground(BACKGROUND_COLOR);
+						statsPanel.setBackground(BACKGROUND_COLOR);
+					}
+				});
 			}
-		});
+		}
 
 		updatePanel();
 

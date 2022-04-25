@@ -86,6 +86,16 @@ public class PartyPlayer extends PartyMemberMessage
 		}
 	}
 
+	public String getSkillExperience(final Skill skill)
+	{
+		if (stats == null)
+		{
+			return "0";
+		}
+
+		return stats.getSkillExps().get(skill);
+	}
+
 	public int getSkillBoostedLevel(final Skill skill)
 	{
 		if (stats == null)

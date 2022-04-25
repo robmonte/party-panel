@@ -24,18 +24,11 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import lombok.Getter;
@@ -53,12 +46,16 @@ public class PlayerBanner extends JPanel
 {
 	private static final Dimension STAT_ICON_SIZE = new Dimension(18, 18);
 	private static final Dimension ICON_SIZE = new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT);
+	private static final BufferedImage EXPAND_ICON = ImageUtil.loadImageResource(PlayerPanel.class, "expand.png");
 	private static final String SPECIAL_ATTACK_NAME = "Special Attack";
 	private static final String RUN_ENERGY_NAME = "Run Energy";
 
+	@Getter
 	private final JPanel statsPanel = new JPanel();
 	private final JLabel iconLabel = new JLabel();
 	private final Map<String, JLabel> statLabels = new HashMap<>();
+	@Getter
+	private final JLabel expandIcon = new JLabel();
 
 	@Setter
 	@Getter
@@ -77,7 +74,9 @@ public class PlayerBanner extends JPanel
 		statsPanel.setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 25));
 		statsPanel.setLayout(new GridLayout(0, 4));
 		statsPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
-		statsPanel.setOpaque(false);
+		statsPanel.setOpaque(true);
+
+		this.expandIcon.setIcon(new ImageIcon(EXPAND_ICON));
 
 		statsPanel.add(createIconPanel(spriteManager, SpriteID.SKILL_HITPOINTS, Skill.HITPOINTS.getName(), String.valueOf(player.getSkillBoostedLevel(Skill.HITPOINTS))));
 		statsPanel.add(createIconPanel(spriteManager, SpriteID.SKILL_PRAYER, Skill.PRAYER.getName(), String.valueOf(player.getSkillBoostedLevel(Skill.PRAYER))));
@@ -117,6 +116,7 @@ public class PlayerBanner extends JPanel
 		nameContainer.setOpaque(false);
 
 		final JLabel usernameLabel = new JLabel();
+		usernameLabel.setLayout(new OverlayLayout(usernameLabel));
 		usernameLabel.setHorizontalTextPosition(JLabel.LEFT);
 		if (player.getUsername() == null)
 		{
@@ -124,13 +124,15 @@ public class PlayerBanner extends JPanel
 		}
 		else
 		{
-			final String levelText = player.getStats() == null ? "" : " (Lvl - " + player.getStats().getCombatLevel() + ")";
+			final String levelText = player.getStats() == null ? "" : " (Lvl " + player.getStats().getCombatLevel() + ")";
 			usernameLabel.setText(player.getUsername() + levelText);
 		}
 
 		final JLabel discordNameLabel = new JLabel(player.getMember().getName());
 		discordNameLabel.setHorizontalTextPosition(JLabel.LEFT);
 
+		expandIcon.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		usernameLabel.add(expandIcon, BorderLayout.EAST);
 		nameContainer.add(usernameLabel);
 		nameContainer.add(discordNameLabel);
 

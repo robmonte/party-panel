@@ -69,7 +69,7 @@ public class PlayerEquipmentPanel extends JPanel
 		EQUIPMENT_SLOT_SPRITE_MAP = sprites.build();
 	}
 
-	private static final BufferedImage PANEL_BACKGROUND = ImageUtil.getResourceStreamFromClass(PlayerEquipmentPanel.class, "equipment-bars.png");
+	private static final BufferedImage PANEL_BACKGROUND = ImageUtil.loadImageResource(PlayerEquipmentPanel.class, "equipment-bars.png");
 	private static final Dimension PANEL_SIZE = new Dimension(PluginPanel.PANEL_WIDTH - 14, 296);
 
 	// Used to offset the weapon/shield and glove/ring slots

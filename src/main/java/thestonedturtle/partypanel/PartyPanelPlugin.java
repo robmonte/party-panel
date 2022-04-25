@@ -51,7 +51,7 @@ import thestonedturtle.partypanel.ui.prayer.PrayerSprites;
 )
 public class PartyPanelPlugin extends Plugin
 {
-	private static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(PartyPanelPlugin.class, "icon.png");
+	private static final BufferedImage ICON = ImageUtil.loadImageResource(PartyPanelPlugin.class, "icon.png");
 
 	@Inject
 	private Client client;
