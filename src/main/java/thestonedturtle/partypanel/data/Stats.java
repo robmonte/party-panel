@@ -24,9 +24,7 @@
  */
 package thestonedturtle.partypanel.data;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,7 +39,7 @@ public class Stats
 {
 	private final Map<Skill, Integer> baseLevels = new HashMap<>();
 	private final Map<Skill, Integer> boostedLevels = new HashMap<>();
-	private final Map<Skill, String> skillExps = new HashMap<>();
+	private final Map<Skill, Integer> skillEXPs = new HashMap<>();
 	private int specialPercent;
 	private int runEnergy;
 	private int combatLevel;
@@ -56,10 +54,9 @@ public class Stats
 			baseLevels.put(s, bases[s.ordinal()]);
 			boostedLevels.put(s, boosts[s.ordinal()]);
 
-			System.out.println("On skill " + s.getName());
-			String exp = NumberFormat.getNumberInstance().format(client.getSkillExperience(s));
-			System.out.println(s.getName() + " exp is " + exp);
-			skillExps.put(s, exp);
+			System.out.println("skill " + s.getName() + ": " + client.getSkillExperience(s) + "xp");
+			int exp = client.getSkillExperience(s);
+			skillEXPs.put(s, exp);
 		}
 
 		combatLevel = Experience.getCombatLevel(

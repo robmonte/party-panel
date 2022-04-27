@@ -220,6 +220,7 @@ public class PlayerPanel extends JPanel
 				final SkillPanelSlot panel = skillsPanel.getPanelMap().get(s);
 				panel.updateBoostedLevel(player.getStats().getBoostedLevels().get(s));
 				panel.updateBaseLevel(player.getStats().getBaseLevels().get(s));
+				panel.updateSkillEXP(player.getStats().getSkillEXPs().get(s));
 			}
 			skillsPanel.getTotalLevelPanel().updateTotalLevel(player.getStats().getTotalLevel());
 		}

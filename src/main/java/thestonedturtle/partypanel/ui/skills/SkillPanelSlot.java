@@ -48,6 +48,7 @@ public class SkillPanelSlot extends JPanel
 
 	private final JLabel boostedLabel = new JLabel();
 	private final JLabel baseLabel = new JLabel();
+	private int skillEXP = 0;
 	private BufferedImage background;
 	private BufferedImage skillHalf;
 	private BufferedImage statHalf;
@@ -73,7 +74,7 @@ public class SkillPanelSlot extends JPanel
 		}
 	}
 
-	SkillPanelSlot(final int boostedLevel, final int baseLevel)
+	SkillPanelSlot(final int boostedLevel, final int baseLevel, final int exp)
 	{
 		super();
 		setOpaque(false);
@@ -108,6 +109,8 @@ public class SkillPanelSlot extends JPanel
 		baseLabel.setBorder(new EmptyBorder(0, 0, 6, 6));
 		baseLabel.setFont(FontManager.getRunescapeSmallFont());
 		baseLabel.setForeground(Color.YELLOW);
+
+		skillEXP = exp;
 
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		c.gridy++;
@@ -145,5 +148,10 @@ public class SkillPanelSlot extends JPanel
 	{
 		boostedLabel.setText(String.valueOf(boostedLevel));
 		boostedLabel.repaint();
+	}
+
+	public void updateSkillEXP(final int exp)
+	{
+		skillEXP = exp;
 	}
 }

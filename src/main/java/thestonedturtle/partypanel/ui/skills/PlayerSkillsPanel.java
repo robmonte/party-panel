@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,9 +129,10 @@ public class PlayerSkillsPanel extends JPanel
 
 		for (final Skill s : SKILLS)
 		{
-			final SkillPanelSlot slot = new SkillPanelSlot(player.getSkillBoostedLevel(s), player.getSkillRealLevel(s));
-			String exp = player.getSkillExperience(s);
-			//slot.setToolTipText(s.getName());
+			//System.out.println("boosted skill: " + s.getName() + " to " + player.getSkillBoostedLevel(s));
+			final SkillPanelSlot slot = new SkillPanelSlot(player.getSkillBoostedLevel(s), player.getSkillRealLevel(s), player.getSkillExperience(s));
+			String exp = NumberFormat.getNumberInstance().format(player.getSkillExperience(s));
+			slot.setToolTipText(s.getName());
 			slot.setToolTipText(exp);
 			panelMap.put(s, slot);
 			this.add(slot);

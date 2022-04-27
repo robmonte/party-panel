@@ -355,6 +355,7 @@ public class PartyPanelPlugin extends Plugin
 			return;
 		}
 
+		myPlayer.setSkillExperience(event.getSkill(), event.getXp());
 		myPlayer.setSkillsBoostedLevel(event.getSkill(), event.getBoostedLevel());
 		myPlayer.setSkillsRealLevel(event.getSkill(), event.getLevel());
 		myPlayer.getStats().setTotalLevel(client.getTotalLevel());

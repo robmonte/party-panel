@@ -86,14 +86,14 @@ public class PartyPlayer extends PartyMemberMessage
 		}
 	}
 
-	public String getSkillExperience(final Skill skill)
+	public int getSkillExperience(final Skill skill)
 	{
 		if (stats == null)
 		{
-			return "0";
+			return 0;
 		}
 
-		return stats.getSkillExps().get(skill);
+		return stats.getSkillEXPs().get(skill);
 	}
 
 	public int getSkillBoostedLevel(final Skill skill)
@@ -114,6 +114,16 @@ public class PartyPlayer extends PartyMemberMessage
 		}
 
 		return stats.getBaseLevels().get(skill);
+	}
+
+	public void setSkillExperience(final Skill skill, final int exp)
+	{
+		if (stats == null)
+		{
+			return;
+		}
+
+		stats.getSkillEXPs().put(skill, exp);
 	}
 
 	public void setSkillsBoostedLevel(final Skill skill, final int level)
