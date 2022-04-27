@@ -53,10 +53,7 @@ public class Stats
 		{
 			baseLevels.put(s, bases[s.ordinal()]);
 			boostedLevels.put(s, boosts[s.ordinal()]);
-
-			System.out.println("skill " + s.getName() + ": " + client.getSkillExperience(s) + "xp");
-			int exp = client.getSkillExperience(s);
-			skillEXPs.put(s, exp);
+			skillEXPs.put(s, client.getSkillExperience(s));
 		}
 
 		combatLevel = Experience.getCombatLevel(

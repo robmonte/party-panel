@@ -350,7 +350,9 @@ public class PartyPanelPlugin extends Plugin
 		}
 
 		final Skill s = event.getSkill();
-		if (myPlayer.getSkillBoostedLevel(s) == event.getBoostedLevel() && myPlayer.getSkillRealLevel(s) == event.getLevel())
+		if (myPlayer.getSkillBoostedLevel(s) == event.getBoostedLevel() &&
+				myPlayer.getSkillRealLevel(s) == event.getLevel() &&
+				myPlayer.getSkillExperience(s) == event.getXp())
 		{
 			return;
 		}

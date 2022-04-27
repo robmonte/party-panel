@@ -154,4 +154,9 @@ public class SkillPanelSlot extends JPanel
 	{
 		skillEXP = exp;
 	}
+
+	public int getSkillEXP()
+	{
+		return skillEXP;
+	}
 }

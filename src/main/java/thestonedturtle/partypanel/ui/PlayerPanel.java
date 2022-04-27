@@ -28,7 +28,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -170,7 +169,7 @@ public class PlayerPanel extends JPanel
 	}
 
 	// TODO add smarter ways to update data
-	public void changePlayer(final PartyPlayer newPlayer)
+	public void updatePlayerData(final PartyPlayer newPlayer)
 	{
 		final boolean newUser = !newPlayer.getMemberId().equals(player.getMemberId());
 
@@ -218,6 +217,7 @@ public class PlayerPanel extends JPanel
 				}
 
 				final SkillPanelSlot panel = skillsPanel.getPanelMap().get(s);
+
 				panel.updateBoostedLevel(player.getStats().getBoostedLevels().get(s));
 				panel.updateBaseLevel(player.getStats().getBaseLevels().get(s));
 				panel.updateSkillEXP(player.getStats().getSkillEXPs().get(s));

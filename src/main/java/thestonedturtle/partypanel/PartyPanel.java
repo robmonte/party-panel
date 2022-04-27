@@ -33,6 +33,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+
+import net.runelite.api.Skill;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import thestonedturtle.partypanel.data.PartyPlayer;
@@ -105,7 +107,8 @@ class PartyPanel extends PluginPanel
 
 		if (playerPanel != null)
 		{
-			playerPanel.changePlayer(player);
+			System.out.println("prayer exp in drawPlayerPanel before update is: " + playerPanelMap.get(player.getMemberId()).getPlayer().getSkillExperience(Skill.PRAYER));
+			playerPanel.updatePlayerData(player);
 		}
 		else
 		{
@@ -113,6 +116,7 @@ class PartyPanel extends PluginPanel
 		}
 
 		basePanel.add(playerPanelMap.get(player.getMemberId()));
+		System.out.println("prayer exp in drawPlayerPanel after update is: " + playerPanelMap.get(player.getMemberId()).getPlayer().getSkillExperience(Skill.PRAYER));
 		basePanel.revalidate();
 		basePanel.repaint();
 	}
