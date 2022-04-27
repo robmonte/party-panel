@@ -107,7 +107,6 @@ class PartyPanel extends PluginPanel
 
 		if (playerPanel != null)
 		{
-			System.out.println("prayer exp in drawPlayerPanel before update is: " + playerPanelMap.get(player.getMemberId()).getPlayer().getSkillExperience(Skill.PRAYER));
 			playerPanel.updatePlayerData(player);
 		}
 		else
@@ -116,7 +115,6 @@ class PartyPanel extends PluginPanel
 		}
 
 		basePanel.add(playerPanelMap.get(player.getMemberId()));
-		System.out.println("prayer exp in drawPlayerPanel after update is: " + playerPanelMap.get(player.getMemberId()).getPlayer().getSkillExperience(Skill.PRAYER));
 		basePanel.revalidate();
 		basePanel.repaint();
 	}

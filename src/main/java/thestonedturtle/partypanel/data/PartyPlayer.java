@@ -123,8 +123,6 @@ public class PartyPlayer extends PartyMemberMessage
 			return;
 		}
 
-		if (skill.getName().equals("Prayer"))
-			System.out.println("Setting prayer xp to " + exp);
 		stats.getSkillEXPs().put(skill, exp);
 	}
 

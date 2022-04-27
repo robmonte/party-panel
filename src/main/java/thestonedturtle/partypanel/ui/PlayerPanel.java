@@ -28,6 +28,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.text.NumberFormat;
 import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -38,10 +39,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import lombok.Getter;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.Prayer;
-import net.runelite.api.Skill;
-import net.runelite.api.SpriteID;
+import net.runelite.api.*;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.ColorScheme;
@@ -220,7 +218,17 @@ public class PlayerPanel extends JPanel
 
 				panel.updateBoostedLevel(player.getStats().getBoostedLevels().get(s));
 				panel.updateBaseLevel(player.getStats().getBaseLevels().get(s));
-				panel.updateSkillEXP(player.getStats().getSkillEXPs().get(s));
+				int newExp = player.getStats().getSkillEXPs().get(s);
+				panel.updateSkillEXP(newExp);
+				StringBuilder tooltipExp = new StringBuilder();
+				tooltipExp.append("<html>" + s.getName() + " XP: ");
+				tooltipExp.append(NumberFormat.getNumberInstance().format(newExp)+ "<br/>");
+				tooltipExp.append("Next level at: ");
+				int nextLevelExp = Experience.getXpForLevel(player.getStats().getBaseLevels().get(s)+1);
+				tooltipExp.append(NumberFormat.getNumberInstance().format(nextLevelExp) + "<br/>");
+				tooltipExp.append("Remaining XP: ");
+				tooltipExp.append(NumberFormat.getNumberInstance().format(nextLevelExp -newExp) + "</html>");
+				panel.setToolTipText(tooltipExp.toString());
 			}
 			skillsPanel.getTotalLevelPanel().updateTotalLevel(player.getStats().getTotalLevel());
 		}
