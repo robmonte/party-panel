@@ -60,6 +60,8 @@ public class ImgUtil
 		BufferedImage combined = new BufferedImage(background.getWidth(), background.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = combined.createGraphics();
 		g2d.drawImage(background, 0, 0, null);
+
+		// For some reason equipment icons are offset and need to be adjusted
 		if (isEquipment){
 			g2d.drawImage(foreground, centeredX+2, centeredY, null);
 		}
@@ -68,6 +70,7 @@ public class ImgUtil
 			g2d.drawImage(foreground, centeredX, centeredY, null);
 
 		}
+		
 		g2d.dispose();
 
 		return combined;
