@@ -48,10 +48,10 @@ public class SkillPanelSlot extends JPanel
 
 	private final JLabel boostedLabel = new JLabel();
 	private final JLabel baseLabel = new JLabel();
-	private int skillEXP = 0;
 	private BufferedImage background;
 	private BufferedImage skillHalf;
 	private BufferedImage statHalf;
+	private int skillEXP;
 
 	@Override
 	protected void paintComponent(Graphics g)

@@ -68,9 +68,8 @@ public class ImgUtil
 		else
 		{
 			g2d.drawImage(foreground, centeredX, centeredY, null);
-
 		}
-		
+
 		g2d.dispose();
 
 		return combined;

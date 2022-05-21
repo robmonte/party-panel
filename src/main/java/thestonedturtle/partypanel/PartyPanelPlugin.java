@@ -92,11 +92,12 @@ public class PartyPanelPlugin extends Plugin
 	@Getter
 	private final HashMap<UUID, Boolean> hideMap = new HashMap<>();
 
+	@Getter
+	private PartyPlayer myPlayer = null;
+
 	private NavigationButton navButton;
 	private boolean addedButton = false;
 	private PartyPanel panel;
-	@Getter
-	private PartyPlayer myPlayer = null;
 
 	@Override
 	protected void startUp() throws Exception
@@ -402,26 +403,5 @@ public class PartyPanelPlugin extends Plugin
 			myPlayer.getStats().setSpecialPercent(specialPercent);
 			wsClient.send(myPlayer);
 		}
-	}
-
-	@Nullable
-	PartyPlayer getPartyPlayerData(final UUID uuid)
-	{
-		if (!isInParty())
-		{
-			return null;
-		}
-
-		if (uuid.equals(myPlayer.getMemberId()))
-		{
-			return myPlayer;
-		}
-
-		return partyMembers.get(uuid);
-	}
-
-	public void leaveParty()
-	{
-		partyService.changeParty(null);
 	}
 }

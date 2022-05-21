@@ -112,12 +112,11 @@ public class PlayerEquipmentPanel extends JPanel
 		this.removeAll();
 
 		final GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
 		c.ipadx = 4;
 		c.ipady = 3;
 		c.anchor = GridBagConstraints.CENTER;
 
-		// I don't see an iterative way to setup this layout correctly
+		// I don't see an iterative way to set up this layout correctly
 		// First row
 		c.gridx = 1;
 		c.gridy = 0;
@@ -172,7 +171,6 @@ public class PlayerEquipmentPanel extends JPanel
 		final AsyncBufferedImage image = item == null ? null : itemManager.getImage(item.getId(), item.getQty(), item.isStackable());
 
 		spriteManager.getSpriteAsync(EQUIPMENT_SLOT_SPRITE_MAP.get(slot), 0, img ->
-		{
 			SwingUtilities.invokeLater(() ->
 			{
 				final EquipmentPanelSlot panel = new EquipmentPanelSlot(item, image, background, img);
@@ -188,7 +186,6 @@ public class PlayerEquipmentPanel extends JPanel
 				}
 
 				add(panel, c);
-			});
-		});
+			}));
 	}
 }

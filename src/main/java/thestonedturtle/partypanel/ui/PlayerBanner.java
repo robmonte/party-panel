@@ -24,11 +24,20 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.OverlayLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import lombok.Getter;
@@ -183,21 +192,19 @@ public class PlayerBanner extends JPanel
 		final JLabel iconLabel = new JLabel();
 		iconLabel.setPreferredSize(STAT_ICON_SIZE);
 		spriteManager.getSpriteAsync(spriteID, 0, img ->
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				if (spriteID == SpriteID.SKILL_PRAYER)
+				SwingUtilities.invokeLater(() ->
 				{
-					iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width+2, STAT_ICON_SIZE.height+2)));
-				}
-				else
-				{
-					iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width, STAT_ICON_SIZE.height)));
-				}
-				iconLabel.revalidate();
-				iconLabel.repaint();
-			});
-		});
+					if (spriteID == SpriteID.SKILL_PRAYER)
+					{
+						iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width+2, STAT_ICON_SIZE.height+2)));
+					}
+					else
+					{
+						iconLabel.setIcon(new ImageIcon(ImageUtil.resizeImage(img, STAT_ICON_SIZE.width, STAT_ICON_SIZE.height)));
+					}
+					iconLabel.revalidate();
+					iconLabel.repaint();
+				}));
 
 		final JLabel textLabel = new JLabel(value);
 		textLabel.setHorizontalAlignment(JLabel.CENTER);

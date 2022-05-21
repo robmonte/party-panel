@@ -24,7 +24,9 @@
  */
 package thestonedturtle.partypanel.ui;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -37,7 +39,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-
 import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.client.game.ItemManager;
@@ -144,7 +145,6 @@ public class PlayerPanel extends JPanel
 	private void addTab(final MaterialTabGroup tabGroup, final int spriteID, final JPanel panel, final String tooltip)
 	{
 		spriteManager.getSpriteAsync(spriteID, 0, img ->
-		{
 			SwingUtilities.invokeLater(() ->
 			{
 				final MaterialTab tab = new MaterialTab(createImageIcon(img), tabGroup, panel);
@@ -157,8 +157,7 @@ public class PlayerPanel extends JPanel
 				{
 					tabGroup.select(tab);
 				}
-			});
-		});
+			}));
 	}
 
 	private ImageIcon createImageIcon(BufferedImage image)
@@ -215,18 +214,18 @@ public class PlayerPanel extends JPanel
 				}
 
 				final SkillPanelSlot panel = skillsPanel.getPanelMap().get(s);
+				int newExp = player.getStats().getSkillEXPs().get(s);
+				int nextLevelExp = Experience.getXpForLevel(player.getStats().getBaseLevels().get(s)+1);
 
 				panel.updateBoostedLevel(player.getStats().getBoostedLevels().get(s));
 				panel.updateBaseLevel(player.getStats().getBaseLevels().get(s));
-				int newExp = player.getStats().getSkillEXPs().get(s);
-				int nextLevelExp = Experience.getXpForLevel(player.getStats().getBaseLevels().get(s)+1);
 				panel.updateSkillEXP(newExp);
-				StringBuilder tooltipExp = new StringBuilder();
-				tooltipExp.append("<html>" + s.getName() + "<br/>");
-				tooltipExp.append("XP: " + NumberFormat.getNumberInstance().format(newExp)+ "<br/>");
-				tooltipExp.append("Level in: ");
-				tooltipExp.append(NumberFormat.getNumberInstance().format(nextLevelExp - newExp) + "</html>");
-				panel.setToolTipText(tooltipExp.toString());
+
+				String tooltipExp = "<html>" + s.getName() + "<br/>";
+				tooltipExp += "XP: " + NumberFormat.getNumberInstance().format(newExp) + "<br/>";
+				tooltipExp += "Level in: " + NumberFormat.getNumberInstance().format(nextLevelExp - newExp) + "</html>";
+
+				panel.setToolTipText(tooltipExp);
 			}
 			skillsPanel.getTotalLevelPanel().updateTotalLevel(player.getStats().getTotalLevel());
 		}
